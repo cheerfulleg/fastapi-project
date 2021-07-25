@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "fastapi-tortoise"
+version = "0.1.0"
+description = ""
+authors = ["ivanyolgin <yolginivan@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+uvicorn = "^0.14.0"
+PyJWT = "^2.1.0"
+passlib = "^1.7.4"
+tortoise = "^0.1.1"
+python-dotenv = "^0.19.0"
+fastapi = "^0.67.0"
+tortoise-orm = "^0.17.5"
+python-multipart = "^0.0.5"
+asyncpg = "^0.23.0"
+bcrypt = "^3.2.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
