@@ -20,7 +20,6 @@ async def authenticate_user(username: str, password: str):
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, settings.JWT_SECRET, algorithms=['HS256'])
-        print(payload)
         user = await User.get(id=payload.get('id'))
     except jwt.exceptions.PyJWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid username or password')
@@ -34,6 +33,7 @@ async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid username or password')
     user_obj = await User_Pydantic.from_tortoise_orm(user)
-    token = jwt.encode(user_obj.dict(), settings.JWT_SECRET)
+    payload = {'id': user_obj.dict().get('id')}
+    token = jwt.encode(payload, settings.JWT_SECRET)
 
     return {'access_token': token, 'token_type': 'bearer'}
