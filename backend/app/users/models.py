@@ -1,6 +1,5 @@
 from passlib.handlers.bcrypt import bcrypt
 from tortoise import Model, fields
-from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 class User(Model):

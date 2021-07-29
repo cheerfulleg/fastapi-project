@@ -4,8 +4,7 @@ from fastapi import APIRouter
 from starlette import status
 from starlette.responses import JSONResponse
 
-from backend.users.models import User
-from backend.users.schemas import Profile_Pydantic, Profile, ProfileInWithUserId_Pydantic
+from backend.app.users.schemas import Profile_Pydantic, Profile, ProfileInWithUserId_Pydantic
 
 profile_router = APIRouter()
 

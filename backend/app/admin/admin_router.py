@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from .profile_views import profile_router
-from .user_views import user_router
+from backend.app.admin.api.profile_views import profile_router
+from backend.app.admin.api.user_views import user_router
 
 admin_router = APIRouter()
 

@@ -4,8 +4,8 @@ from fastapi import APIRouter
 from starlette import status
 from starlette.responses import JSONResponse
 
-from backend.users.schemas import User_Pydantic, UserIn_Pydantic, User, UserInNoPassword_Pydantic
-from backend.utils.utils import create_password_hash
+from backend.app.users.schemas import User_Pydantic, UserIn_Pydantic, User, UserInNoPassword_Pydantic
+from backend.app.users.utils import create_password_hash
 
 user_router = APIRouter()
 

@@ -17,6 +17,11 @@ python-multipart = "^0.0.5"
 asyncpg = "^0.23.0"
 bcrypt = "^3.2.0"
 aerich = "^0.5.4"
+pytest = "^6.2.4"
+requests = "^2.26.0"
+astroid = "^2.6.5"
+pylint = "^2.9.6"
+asynctest = "^0.13.0"
 
 [tool.poetry.dev-dependencies]
 

@@ -1,6 +1,6 @@
-from tortoise.contrib.pydantic import pydantic_model_creator, PydanticModel
+from tortoise.contrib.pydantic import pydantic_model_creator
 
-from backend.users.models import Profile, User
+from backend.app.users.models import Profile, User
 
 
 Profile_Pydantic = pydantic_model_creator(Profile,
