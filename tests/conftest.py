@@ -11,7 +11,7 @@ from backend.app.users.utils import create_password_hash
 from backend.main import app
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='module', autouse=True)
 def client() -> Generator:
     initializer(modules=MODELS)
     with TestClient(app) as c:
@@ -19,12 +19,12 @@ def client() -> Generator:
     finalizer()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def event_loop(client: TestClient) -> Generator:
     yield client.task.get_loop()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def admin_user() -> dict:
     return {
         'username': 'admin',
@@ -33,7 +33,7 @@ def admin_user() -> dict:
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def default_user() -> dict:
     return {
         'username': 'default',
@@ -60,11 +60,11 @@ def get_headers(client: TestClient, user_data: dict, event_loop: asyncio.Abstrac
     return headers
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='module')
 def get_admin_headers(client: TestClient, admin_user: dict, event_loop: asyncio.AbstractEventLoop):
     return get_headers(client=client, event_loop=event_loop, user_data=admin_user)
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='module')
 def get_default_headers(client: TestClient, default_user: dict, event_loop: asyncio.AbstractEventLoop):
     return get_headers(client=client, event_loop=event_loop, user_data=default_user)
