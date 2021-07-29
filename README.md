@@ -43,3 +43,11 @@ aerich upgrade
 ```shell
 aerich downgrade
 ```
+
+##Testing
+Pytest was chosen as testing tool.
+
+Run tests:
+```shell
+run_tests.sh
+```
