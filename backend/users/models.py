@@ -10,12 +10,10 @@ class User(Model):
     is_admin = fields.BooleanField(default=False)
     created_at = fields.DatetimeField(auto_now=True)
 
+    profile: fields.ReverseRelation["Profile"]
+
     def verify_password(self, password):
         return bcrypt.verify(password, self.password_hash)
-
-
-User_Pydantic = pydantic_model_creator(User, name='User')
-UserIn_Pydantic = pydantic_model_creator(User, name='UserIn', exclude_readonly=True)
 
 
 class Profile(Model):
@@ -25,9 +23,8 @@ class Profile(Model):
     last_name = fields.CharField(60)
     date_of_birth = fields.DateField()
 
+    def user_id(self) -> int:
+        return self.user.id
+
     class PydanticMeta:
-        exclude = ('id',)
-
-
-Profile_Pydantic = pydantic_model_creator(Profile, name='Profile')
-ProfileIn_Pydantic = pydantic_model_creator(Profile, name='ProfileIn')
+        computed = ('user_id',)

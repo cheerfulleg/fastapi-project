@@ -1,19 +1,11 @@
 from fastapi import APIRouter, Depends
-from passlib.handlers.bcrypt import bcrypt
 from starlette import status
 from starlette.responses import JSONResponse
 
-from .models import User_Pydantic, UserIn_Pydantic, User, Profile_Pydantic, ProfileIn_Pydantic, Profile
+from .schemas import User_Pydantic, User, Profile_Pydantic, ProfileIn_Pydantic, Profile
 from ..auth import get_current_user
 
 router = APIRouter()
-
-
-@router.post('', response_model=User_Pydantic)
-async def create_user(user: UserIn_Pydantic):
-    user_obj = User(username=user.username, password_hash=bcrypt.hash(user.password_hash))
-    await user_obj.save()
-    return await User_Pydantic.from_tortoise_orm(user_obj)
 
 
 @router.post('/profile', response_model=Profile_Pydantic)
@@ -40,7 +32,7 @@ async def update_user_profile(profile: ProfileIn_Pydantic, user: User = Depends(
     return await Profile_Pydantic.from_queryset_single(Profile.get(user_id=user_id))
 
 
-@router.delete('/profile', response_model=Profile_Pydantic)
+@router.delete('/profile')
 async def update_user_profile(user: User = Depends(get_current_user)):
     await Profile.filter(user_id=user.id).delete()
-    return JSONResponse(status_code=status.HTTP_200_OK, content={'message': 'profile deleted'})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={'message': 'Profile deleted successfully'})

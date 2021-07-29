@@ -1,7 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from tortoise.contrib.fastapi import register_tortoise
 
+from backend.auth import check_user_is_admin
 from backend.config import settings
+
+MODELS_LIST = ["backend.users.models"]
 
 
 def get_db_uri(user: str, passwd: str, host: str, db: str) -> str:
@@ -9,10 +12,12 @@ def get_db_uri(user: str, passwd: str, host: str, db: str) -> str:
 
 
 def register_views(app: FastAPI) -> None:
-    from backend.users.views import router as users_router
+    from .admin.admin_router import admin_router
+    from .users.views import router as users_router
     from .auth import router as auth
     app.include_router(auth, tags=['JWT'])
-    app.include_router(users_router, prefix="/users", tags=["Users"])
+    app.include_router(admin_router, prefix='/admin', tags=['Admin'], dependencies=[Depends(check_user_is_admin)])
+    app.include_router(users_router, tags=["User Profile"])
 
 
 DB_URI = get_db_uri(
@@ -26,7 +31,7 @@ TORTOISE_ORM = {
     "connections": {"default": DB_URI},
     "apps": {
         "models": {
-            "models": ["backend.users.models", "aerich.models"],
+            "models": MODELS_LIST + ["aerich.models"],
             "default_connection": "default",
         },
     },
@@ -39,7 +44,7 @@ def create_app() -> FastAPI:
     register_tortoise(
         app,
         db_url=DB_URI,
-        modules={"models": ["backend.users.models"]},
+        modules={"models": MODELS_LIST},
         generate_schemas=True,
         add_exception_handlers=True,
     )
