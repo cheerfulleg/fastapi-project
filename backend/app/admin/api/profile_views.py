@@ -30,7 +30,7 @@ async def get_profile_by_id(profile_id: int = Path(..., gt=0)):
     return await Profile_Pydantic.from_queryset_single(Profile.get(id=profile_id))
 
 
-@profile_router.post('', response_model=Profile_Pydantic)
+@profile_router.post('', response_model=Profile_Pydantic, status_code=201)
 async def create_profile(profile: ProfileInWithUserId_Pydantic):
     """
     **Admin permission required**

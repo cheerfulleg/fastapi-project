@@ -10,7 +10,7 @@ from backend.app.users.utils import create_password_hash
 user_router = APIRouter()
 
 
-@user_router.post('', response_model=User_Pydantic)
+@user_router.post('', response_model=User_Pydantic, status_code=201)
 async def create_user(new_user: UserIn_Pydantic):
     """
     **Admin permission required**

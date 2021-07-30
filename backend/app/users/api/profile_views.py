@@ -8,7 +8,7 @@ from backend.app.users.schemas import User_Pydantic, User, Profile_Pydantic, Pro
 profile_router = APIRouter()
 
 
-@profile_router.post('', response_model=Profile_Pydantic)
+@profile_router.post('', response_model=Profile_Pydantic, status_code=201)
 async def create_user_profile(profile: ProfileIn_Pydantic, user: User = Depends(get_current_user)):
     """
     **Login required**
