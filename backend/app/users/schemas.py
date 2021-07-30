@@ -25,7 +25,8 @@ User_Pydantic = pydantic_model_creator(User,
                                        )
 UserDefaultIn_Pydantic = pydantic_model_creator(User,
                                                 name='UserDefaultIn',
-                                                exclude=('is_admin',)
+                                                exclude=('is_admin',),
+                                                exclude_readonly=True
                                                 )
 UserIn_Pydantic = pydantic_model_creator(User,
                                          name='UserIn',

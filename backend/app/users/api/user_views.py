@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from backend.app.users.schemas import User_Pydantic, UserIn_Pydantic, User, UserDefaultIn_Pydantic
+from backend.app.users.schemas import User_Pydantic, User, UserDefaultIn_Pydantic
 from backend.app.users.utils import create_password_hash
 
 user_router = APIRouter()
