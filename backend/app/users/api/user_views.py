@@ -12,7 +12,6 @@ async def create_user(new_user: UserDefaultIn_Pydantic):
     Create new user
     - **username**: string 50 characters (no validation)
     - **password_hash**: any password that will be hashed
-    - **is_admin**: admin rights access flag (false by default)
     """
     user_obj = User(username=new_user.username, password_hash=await create_password_hash(new_user.password_hash))
     await user_obj.save()
