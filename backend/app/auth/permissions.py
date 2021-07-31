@@ -1,19 +1,15 @@
-import jwt
 from fastapi import HTTPException, Depends
 from starlette import status
 
+from backend.app.auth.jwt import auth_jwt
 from backend.app.users.models import User
 from backend.app.users.schemas import User_Pydantic
 from backend.config import settings
 
 
 async def get_current_user(token: str = Depends(settings.oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=['HS256'])
-        user = await User.get(id=payload.get('id'))
-    except jwt.exceptions.PyJWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid username or password')
-
+    token_data = auth_jwt.decode_token(token)
+    user = await User.get(id=token_data.get('id'))
     return await User_Pydantic.from_tortoise_orm(user)
 
 

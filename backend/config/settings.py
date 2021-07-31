@@ -20,10 +20,14 @@ if TESTING:
 else:
     DB_URI = f"postgres://{POSTGRESQL_USERNAME}:{POSTGRESQL_PASSWORD}@{POSTGRESQL_HOSTNAME}:5432/{POSTGRESQL_DATABASE}"
 
-JWT_SECRET: str = os.getenv('JWT_SECRET')
 
 MODELS_LIST = [
     "backend.app.users.models",
 ]
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+
+# JWT settings
+JWT_SECRET = os.getenv('JWT_SECRET')
+REFRESH_TOKEN_EXP_HOURS = int(os.getenv('REFRESH_TOKEN_EXP_HOURS'))
+ACCESS_TOKEN_EXP_MINUTES = int(os.getenv('ACCESS_TOKEN_EXP_MINUTES'))
