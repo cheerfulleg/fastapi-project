@@ -36,6 +36,7 @@ async def get_user_profile(user: User_Pydantic = Depends(get_current_user)):
     Get current user profile details
     """
     profile_obj = await Profile.get(user_id=user.id)
+    print(profile_obj)
     return await Profile_Pydantic.from_tortoise_orm(profile_obj)
 
 
