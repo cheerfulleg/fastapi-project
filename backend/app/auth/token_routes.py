@@ -9,6 +9,9 @@ token_router = APIRouter()
 
 @token_router.post('/token')
 async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    """
+    Generates JWT token pair: access token and refresh token
+    """
     user = await auth_jwt.authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid username or password')
@@ -22,5 +25,8 @@ async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
 
 @token_router.post('/token/refresh')
 async def generate_new_access_token(token: str):
+    """
+    Uses refresh token to generate new access token
+    """
     access_token = auth_jwt.create_access_token_from_refresh_token(refresh_token=token)
     return {'access_token': access_token}

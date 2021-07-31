@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from tortoise.contrib.pydantic import pydantic_model_creator
 
 from backend.app.users.models import Profile, User
@@ -36,3 +37,7 @@ UserInNoPassword_Pydantic = pydantic_model_creator(User,
                                                    exclude=('password_hash',),
                                                    exclude_readonly=True
                                                    )
+
+
+class ResetPassword(BaseModel):
+    password: str

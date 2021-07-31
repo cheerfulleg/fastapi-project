@@ -3,7 +3,7 @@ from fastapi_mail import MessageSchema
 from starlette.responses import JSONResponse
 
 from backend.app.auth.jwt import auth_jwt
-from backend.app.users.schemas import User_Pydantic, User, UserDefaultIn_Pydantic
+from backend.app.users.schemas import User_Pydantic, User, UserDefaultIn_Pydantic, ResetPassword
 from backend.app.users.utils import create_password_hash
 from backend.config.settings import fm
 
@@ -47,8 +47,8 @@ async def reset_password(email: str, background_tasks: BackgroundTasks):
 
 
 @user_router.post("/reset-password/{token}")
-async def reset_password(token: str, password: str):
+async def reset_password(token: str, data: ResetPassword):
     payload = auth_jwt.decode_token(token)
-    password_hash = await create_password_hash(password)
+    password_hash = await create_password_hash(data.password)
     await User.filter(id=payload.get('id')).update(password_hash=password_hash)
     return JSONResponse(status_code=200, content={'detail': 'password was changed'})
