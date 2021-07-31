@@ -41,6 +41,7 @@ def update_profile_data_with_invalid_user_id() -> dict:
 def create_user_data() -> dict:
     return {
         "username": "test",
+        "email": "user@email.com",
         "password_hash": "secret",
         "is_admin": False
     }
@@ -50,6 +51,7 @@ def create_user_data() -> dict:
 def update_user_data() -> dict:
     return {
         "username": "update_test",
+        'email': 'default@email.com',
         "is_admin": True
     }
 
@@ -58,6 +60,7 @@ def update_user_data() -> dict:
 def admin_user() -> dict:
     return {
         'username': 'admin',
+        'email': 'admin@email.com',
         'password': 'secret',
         'is_admin': True
     }
@@ -67,6 +70,7 @@ def admin_user() -> dict:
 def default_user() -> dict:
     return {
         'username': 'default',
+        'email': 'default@email.com',
         'password': 'secret',
         'is_admin': False
     }
@@ -77,6 +81,7 @@ def default_user() -> dict:
 def create_default_user() -> dict:
     return {
         "username": "test",
+        'email': 'default@email.com',
         "password_hash": "secret",
     }
 

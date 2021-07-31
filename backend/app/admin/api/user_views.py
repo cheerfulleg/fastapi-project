@@ -17,10 +17,12 @@ async def create_user(new_user: UserIn_Pydantic):
 
     Create new user
     - **username**: string 50 characters (no validation)
+    - **email**: string 120 characters (validating)
     - **password_hash**: any password that will be hashed
     - **is_admin**: admin rights access flag
     """
-    user_obj = await User.create(username=new_user.username, password_hash=await create_password_hash(new_user.password_hash))
+    password_hash = await create_password_hash(new_user.password_hash)
+    user_obj = await User.create(username=new_user.username, email=new_user.email, password_hash=password_hash)
     return await User_Pydantic.from_tortoise_orm(user_obj)
 
 

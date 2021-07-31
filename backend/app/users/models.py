@@ -1,10 +1,16 @@
+import re
+
 from passlib.handlers.bcrypt import bcrypt
 from tortoise import Model, fields
+from tortoise.validators import RegexValidator
+
+REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 
 class User(Model):
-    id = fields.IntField(pk=True)
-    username = fields.CharField(50, unique=True)
+    id = fields.IntField(pk=True, index=True)
+    username = fields.CharField(50, unique=True, index=True)
+    email = fields.CharField(120, validators=[RegexValidator(REGEX, re.I)])
     password_hash = fields.CharField(128)
     is_admin = fields.BooleanField(default=False)
     created_at = fields.DatetimeField(auto_now=True)
