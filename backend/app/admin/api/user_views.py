@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, HTTPException
 from starlette import status
 from starlette.responses import JSONResponse
 
@@ -66,5 +66,7 @@ async def delete_user_by_id(user_id: int):
 
     Delete user
     """
-    await User.filter(id=user_id).delete()
+    deleted_count = await User.filter(id=user_id).delete()
+    if not deleted_count:
+        raise HTTPException(status_code=404, detail=f'User not found')
     return JSONResponse(status_code=status.HTTP_200_OK, content={'message': 'User deleted successfully'})

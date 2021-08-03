@@ -119,6 +119,11 @@ def test_admin_delete_user_by_id(client: TestClient, event_loop: asyncio.Abstrac
     assert len(user_filter) == 0
 
 
+def test_admin_delete_user_by_invalid_id(client: TestClient, get_admin_headers: dict):
+    response = client.delete(f'/admin/profile/{INVALID_USER_ID}', headers=get_admin_headers)
+    assert response.status_code == 404
+
+
 def test_admin_delete_user_by_id_unauthenticated(client: TestClient):
     response = client.delete(f'/admin/profile/{USER_ID}')
     assert response.status_code == 401

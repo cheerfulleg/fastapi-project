@@ -70,5 +70,7 @@ async def delete_profile_by_id(profile_id: int = Path(..., gt=0)):
 
     Delete profile
     """
-    await Profile.filter(id=profile_id).delete()
+    deleted_count = await Profile.filter(id=profile_id).delete()
+    if not deleted_count:
+        raise HTTPException(status_code=404, detail=f'Profile not found')
     return JSONResponse(status_code=status.HTTP_200_OK, content={'message': 'Profile deleted successfully'})
