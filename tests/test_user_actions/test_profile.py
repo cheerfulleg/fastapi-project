@@ -1,6 +1,6 @@
 from backend.app.users.models import Profile
 from ..fixtures import *
-from ..utils import get_obj_from_db, filter_obj_from_db, permission_testing
+from ..utils import get_obj_from_db, filter_obj_from_db
 
 
 def test_user_create_profile(client: TestClient, event_loop: asyncio.AbstractEventLoop,

@@ -21,7 +21,7 @@ async def create_user(new_user: UserIn_Pydantic):
     - **password_hash**: any password that will be hashed
     - **is_admin**: admin rights access flag
     """
-    password_hash = await create_password_hash(new_user.password_hash)
+    password_hash = create_password_hash(new_user.password_hash)
     user_obj = await User.create(username=new_user.username, email=new_user.email, password_hash=password_hash)
     return await User_Pydantic.from_tortoise_orm(user_obj)
 
