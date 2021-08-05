@@ -23,6 +23,7 @@ else:
 
 MODELS_LIST = [
     "backend.app.users.models",
+    "backend.app.posts.models"
 ]
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')

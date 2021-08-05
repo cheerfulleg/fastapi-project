@@ -4,6 +4,8 @@ from passlib.handlers.bcrypt import bcrypt
 from tortoise import Model, fields
 from tortoise.validators import RegexValidator
 
+from backend.app.posts.models import Post
+
 REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 
@@ -27,6 +29,8 @@ class Profile(Model):
     first_name = fields.CharField(60)
     last_name = fields.CharField(60)
     date_of_birth = fields.DateField()
+
+    posts: fields.ReverseRelation["Post"]
 
     def user_id(self) -> int:
         return self.user.id
