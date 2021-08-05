@@ -76,6 +76,16 @@ def default_user() -> dict:
     }
 
 
+@pytest.fixture(scope='module')
+def profile_user() -> dict:
+    return {
+        'username': 'Profile',
+        'email': 'has_profile@email.com',
+        'password': 'secret',
+        'is_admin': False
+    }
+
+
 # Fixtures for test_user_actions
 @pytest.fixture(scope='module')
 def create_default_user() -> dict:
@@ -104,6 +114,22 @@ def update_user_profile() -> dict:
     }
 
 
+@pytest.fixture(scope='module')
+def create_post_data() -> dict:
+    return {
+        'title': 'Dummy title',
+        'body': 'lorem ipsum'
+    }
+
+
+@pytest.fixture(scope='module')
+def update_post_data() -> dict:
+    return {
+        'title': 'Updated post',
+        'body': 'some data'
+    }
+
+
 # Shared fixtures
 @pytest.fixture(scope='module')
 def invalid_profile_data() -> dict:
@@ -122,10 +148,28 @@ def invalid_user_data() -> dict:
 
 
 @pytest.fixture(scope='module')
+def invalid_post_data() -> dict:
+    return {
+        'title': 'Title' * 100
+    }
+
+
+@pytest.fixture(scope='module')
 def get_admin_headers(client: TestClient, admin_user: dict, event_loop: asyncio.AbstractEventLoop) -> dict:
+    """Creates headers for admin user"""
     return get_headers(client=client, event_loop=event_loop, user_data=admin_user)
 
 
 @pytest.fixture(scope='module')
 def get_default_headers(client: TestClient, default_user: dict, event_loop: asyncio.AbstractEventLoop) -> dict:
+    """Creates headers for default non-profile user"""
     return get_headers(client=client, event_loop=event_loop, user_data=default_user)
+
+
+@pytest.fixture(scope='module')
+def get_user_with_profile_headers(client: TestClient, profile_user: dict, create_user_profile: dict,
+                                  event_loop: asyncio.AbstractEventLoop) -> dict:
+    """Creates headers for user with profile"""
+    headers = get_headers(client=client, event_loop=event_loop, user_data=profile_user)
+    client.post('/profile', json=create_user_profile, headers=headers)
+    return headers
