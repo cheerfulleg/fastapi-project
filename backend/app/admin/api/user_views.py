@@ -1,8 +1,11 @@
 from typing import List
 
 from fastapi import APIRouter, Path, HTTPException
+from fastapi_pagination import Page
 from starlette import status
 from starlette.responses import JSONResponse
+from fastapi_pagination.ext.tortoise import paginate
+
 
 from backend.app.users.schemas import (
     User_Pydantic,
@@ -41,14 +44,14 @@ async def get_user_by_id(user_id: int = Path(..., gt=0)):
     return await User_Pydantic.from_queryset_single(User.get(id=user_id))
 
 
-@user_router.get("", response_model=List[User_Pydantic])
+@user_router.get("", response_model=Page[User_Pydantic])
 async def get_users_list():
     """
     **Admin permission required**
 
     Get list of users
     """
-    return await User_Pydantic.from_queryset(User.all())
+    return await paginate(User)
 
 
 @user_router.put("/{user_id}", response_model=User_Pydantic)

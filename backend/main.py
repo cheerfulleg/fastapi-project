@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi_pagination import add_pagination
 from tortoise.contrib.fastapi import register_tortoise
 
 from backend.app.routers import register_views
@@ -14,5 +15,5 @@ register_tortoise(
     add_exception_handlers=True,
 )
 
-register_views(app=app)
-
+register_views(app)
+add_pagination(app)

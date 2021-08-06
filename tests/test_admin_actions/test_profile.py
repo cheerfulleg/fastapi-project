@@ -64,8 +64,8 @@ def test_admin_get_list_profile_list(client: TestClient, get_admin_headers: dict
     response = client.get("/admin/profile", headers=get_admin_headers)
     assert response.status_code == 200
     data = response.json()
-    assert type(data) == list
-    assert data[0].get("id") == 1
+    assert type(data["items"]) == list
+    assert data["items"][0].get("id") == 1
 
 
 def test_admin_get_list_profile_list_unauthenticated(client: TestClient):

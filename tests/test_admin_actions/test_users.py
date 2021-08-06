@@ -66,9 +66,9 @@ def test_admin_get_user_list(client: TestClient, get_admin_headers: dict):
     response = client.get("/admin/users", headers=get_admin_headers)
     assert response.status_code == 200
     data = response.json()
-    assert type(data) == list
-    assert data[0].get("username") == "admin"
-    assert data[1].get("username") == "test"
+    assert type(data["items"]) == list
+    assert data["items"][0].get("username") == "admin"
+    assert data["items"][1].get("username") == "test"
 
 
 def test_admin_get_user_list_unauthenticated(client: TestClient):

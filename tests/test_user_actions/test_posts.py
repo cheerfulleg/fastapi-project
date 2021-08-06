@@ -62,8 +62,8 @@ def test_profile_get_posts_list(client: TestClient, get_user_with_profile_header
     response = client.get("/posts", headers=get_user_with_profile_headers)
     assert response.status_code == 200
     data = response.json()
-    assert type(data) == list
-    assert data[0].get("id") == 1
+    assert type(data["items"]) == list
+    assert data["items"][0].get("id") == 1
 
 
 def test_user_no_profile_get_posts_list(client: TestClient, get_default_headers: dict):

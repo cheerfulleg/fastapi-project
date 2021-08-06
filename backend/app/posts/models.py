@@ -12,5 +12,11 @@ class Post(Model, TimestampMixin):
     title = fields.CharField(120)
     body = fields.TextField()
 
+    def profile_id(self) -> int:
+        return self.profile.id
+
     class Meta:
         order_by = ("-created_at",)
+
+    class PydanticMeta:
+        computed = ("profile_id",)

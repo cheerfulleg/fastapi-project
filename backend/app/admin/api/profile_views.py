@@ -1,6 +1,6 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException, Path
+from fastapi_pagination import Page
+from fastapi_pagination.ext.tortoise import paginate
 from starlette import status
 from starlette.responses import JSONResponse
 
@@ -14,14 +14,14 @@ from backend.app.users.schemas import (
 profile_router = APIRouter()
 
 
-@profile_router.get("", response_model=List[Profile_Pydantic])
+@profile_router.get("", response_model=Page[Profile_Pydantic])
 async def get_profile_list():
     """
     **Admin permission required**
 
      Get list of existing profiles
     """
-    return await Profile_Pydantic.from_queryset(Profile.all())
+    return await paginate(Profile)
 
 
 @profile_router.get("/{profile_id}", response_model=Profile_Pydantic)

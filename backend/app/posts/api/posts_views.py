@@ -1,6 +1,6 @@
-from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi_pagination import Page
+from fastapi_pagination.ext.tortoise import paginate
 from starlette import status
 from starlette.responses import JSONResponse
 
@@ -25,14 +25,14 @@ async def create_post(post: PostIn_Pydantic, profile: Profile = Depends(has_prof
     return await Post_Pydantic.from_tortoise_orm(post_obj)
 
 
-@posts_router.get("", response_model=List[Post_Pydantic])
+@posts_router.get("", response_model=Page[Post_Pydantic])
 async def get_profile_posts(profile: Profile = Depends(has_profile)):
     """
     **Has_Profile permissions required**
 
     Get list of current user's posts
     """
-    return await Post_Pydantic.from_queryset(Post.filter(profile_id=profile.id))
+    return await paginate(Post.filter(profile_id=profile.id))
 
 
 @posts_router.get("/{post_id}", response_model=Post_Pydantic)
