@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "v4.0.1"
+    hooks:
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  - repo: local
+
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        language: system
+        types: [ python ]
+        args: [ --line-length=200, --target-version=py37 ]
