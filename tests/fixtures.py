@@ -3,7 +3,7 @@ import asyncio
 import pytest
 from starlette.testclient import TestClient
 
-from tests.utils import get_headers
+from tests.utils import get_headers, get_profile_headers
 
 
 # Fixtures for test_admin_actions
@@ -28,7 +28,7 @@ def update_profile_data() -> dict:
 
 
 @pytest.fixture()
-def update_profile_data_with_invalid_user_id() -> dict:
+def profile_data_with_invalid_user_id() -> dict:
     return {
         "first_name": "upd test",
         "last_name": "foo",
@@ -80,6 +80,21 @@ def profile_user() -> dict:
         "password": "secret",
         "is_admin": False,
     }
+
+
+@pytest.fixture(scope="module")
+def post_data() -> dict:
+    return {"title": "Dummy title", "body": "lorem ipsum", "profile_id": 1}
+
+
+@pytest.fixture(scope="module")
+def admin_update_post_data() -> dict:
+    return {"title": "Update title", "body": "lorem ipsum", "profile_id": 1}
+
+
+@pytest.fixture(scope="module")
+def post_data_with_invalid_profile_id() -> dict:
+    return {"title": "Dummy title", "body": "lorem ipsum", "profile_id": 88888}
 
 
 # Fixtures for test_user_actions
@@ -148,6 +163,10 @@ def get_user_with_profile_headers(
     event_loop: asyncio.AbstractEventLoop,
 ) -> dict:
     """Creates headers for user with profile"""
-    headers = get_headers(client=client, event_loop=event_loop, user_data=profile_user)
-    client.post("/profile", json=create_user_profile, headers=headers)
-    return headers
+    return get_profile_headers(client=client, user_data=profile_user, profile_data=create_user_profile, event_loop=event_loop)
+
+
+@pytest.fixture(scope="module")
+def get_admin_with_profile_headers(client: TestClient, admin_user: dict, create_user_profile: dict, event_loop: asyncio.AbstractEventLoop):
+    """Creates admin user with profile instance"""
+    return get_profile_headers(client=client, user_data=admin_user, profile_data=create_user_profile, event_loop=event_loop)

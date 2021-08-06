@@ -22,6 +22,18 @@ def get_headers(client: TestClient, user_data: dict, event_loop: asyncio.Abstrac
     return headers
 
 
+def get_profile_headers(
+    client: TestClient,
+    profile_data: dict,
+    user_data: dict,
+    event_loop: asyncio.AbstractEventLoop,
+) -> dict:
+    """Creates headers for user with profile"""
+    headers = get_headers(client=client, event_loop=event_loop, user_data=user_data)
+    client.post("/profile", json=profile_data, headers=headers)
+    return headers
+
+
 async def get_obj_from_db(model, response_json: dict):
     obj_id = response_json.get("id")
     return await model.get(id=obj_id)

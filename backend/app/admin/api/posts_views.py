@@ -22,6 +22,9 @@ async def create_post(post: PostInWithProfileId_Pydantic):
     - **body**:  post body, text field
     - **profile_id**: profile reference
     """
+    profile_obj = await Profile.get(id=post.dict().get("profile_id"))
+    if not profile_obj:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     post_obj = await Post.create(**post.dict(exclude_unset=True))
     return await Post_Pydantic.from_tortoise_orm(post_obj)
 
@@ -44,7 +47,7 @@ async def get_post_by_id(post_id: int = Path(..., gt=0)):
 
     Get post details
     """
-    return Post_Pydantic.from_queryset_single(Post.get(id=post_id))
+    return await Post_Pydantic.from_queryset_single(Post.get(id=post_id))
 
 
 @posts_router.put("/{post_id}", response_model=Post_Pydantic)
@@ -61,7 +64,7 @@ async def update_post_by_id(post: PostInWithProfileId_Pydantic, post_id: int = P
     if not profile_obj:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     await Post.filter(id=post_id).update(**post.dict(exclude_unset=True))
-    return await Post_Pydantic.from_queryset_single(Profile.get(id=post_id))
+    return await Post_Pydantic.from_queryset_single(Post.get(id=post_id))
 
 
 @posts_router.delete("/{post_id}")
@@ -73,7 +76,7 @@ async def delete_post_by_id(post_id: int = Path(..., gt=0)):
     """
     deleted_count = await Post.filter(id=post_id).delete()
     if not deleted_count:
-        raise HTTPException(status_code=404, detail=f"Profile not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={"message": "Post deleted successfully"},
