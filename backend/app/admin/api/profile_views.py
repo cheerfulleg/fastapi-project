@@ -45,6 +45,9 @@ async def create_profile(profile: ProfileInWithUserId_Pydantic):
     - **date_of_birth**: user's date of birth (no validation)
     - **user_id**: profile relation to user
     """
+    user_obj = await User.get(id=profile.dict().get("user_id"))
+    if not user_obj:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     profile_obj = await Profile.create(**profile.dict(exclude_unset=True))
     return await Profile_Pydantic.from_tortoise_orm(profile_obj)
 

@@ -21,7 +21,12 @@ def test_admin_create_profile(
     assert profile_obj.id == data.get("id")
 
 
-def test_admin_create_profile_with_invalid_data(client: TestClient, invalid_profile_data: dict, get_admin_headers: dict):
+def test_admin_create_profile_with_invalid_data(client: TestClient, profile_data_with_invalid_user_id: dict, get_admin_headers: dict):
+    response = client.post("/admin/profiles", json=profile_data_with_invalid_user_id, headers=get_admin_headers)
+    assert response.status_code == 404
+
+
+def test_admin_create_profile_with_invalid_user_id(client: TestClient, invalid_profile_data: dict, get_admin_headers: dict):
     response = client.post("/admin/profiles", json=invalid_profile_data, headers=get_admin_headers)
     assert response.status_code == 422
 
@@ -125,12 +130,12 @@ def test_admin_update_profile_by_id_not_admin(client: TestClient, get_default_he
 def test_admin_update_profile_by_id_with_invalid_user_id(
     client: TestClient,
     get_admin_headers: dict,
-    update_profile_data_with_invalid_user_id: dict,
+    profile_data_with_invalid_user_id: dict,
 ):
     response = client.put(
         f"/admin/profiles/{PROFILE_ID}",
         headers=get_admin_headers,
-        json=update_profile_data_with_invalid_user_id,
+        json=profile_data_with_invalid_user_id,
     )
     assert response.status_code == 404
 
