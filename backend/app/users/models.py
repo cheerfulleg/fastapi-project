@@ -6,7 +6,7 @@ from tortoise.validators import RegexValidator
 
 from backend.app.posts.models import Post
 
-REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+REGEX = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
 
 
 class User(Model):
@@ -25,7 +25,7 @@ class User(Model):
 
 class Profile(Model):
     id = fields.IntField(pk=True)
-    user = fields.OneToOneField('models.User', related_name='profile', on_delete=fields.CASCADE)
+    user = fields.OneToOneField("models.User", related_name="profile", on_delete=fields.CASCADE)
     first_name = fields.CharField(60)
     last_name = fields.CharField(60)
     date_of_birth = fields.DateField()
@@ -36,4 +36,4 @@ class Profile(Model):
         return self.user.id
 
     class PydanticMeta:
-        computed = ('user_id',)
+        computed = ("user_id",)

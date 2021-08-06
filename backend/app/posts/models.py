@@ -8,9 +8,9 @@ class TimestampMixin:
 
 class Post(Model, TimestampMixin):
     id = fields.IntField(pk=True)
-    profile = fields.ForeignKeyField('models.Profile', related_name='posts', on_delete=fields.CASCADE)
+    profile = fields.ForeignKeyField("models.Profile", related_name="posts", on_delete=fields.CASCADE)
     title = fields.CharField(120)
     body = fields.TextField()
 
     class Meta:
-        order_by = ('-created_at',)
+        order_by = ("-created_at",)

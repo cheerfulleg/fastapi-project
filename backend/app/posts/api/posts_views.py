@@ -12,7 +12,7 @@ from ...users.models import Profile
 posts_router = APIRouter()
 
 
-@posts_router.post('', status_code=201, response_model=Post_Pydantic)
+@posts_router.post("", status_code=201, response_model=Post_Pydantic)
 async def create_post(post: PostIn_Pydantic, profile: Profile = Depends(has_profile)):
     """
     **Has_Profile permissions required**
@@ -25,7 +25,7 @@ async def create_post(post: PostIn_Pydantic, profile: Profile = Depends(has_prof
     return await Post_Pydantic.from_tortoise_orm(post_obj)
 
 
-@posts_router.get('', response_model=List[Post_Pydantic])
+@posts_router.get("", response_model=List[Post_Pydantic])
 async def get_profile_posts(profile: Profile = Depends(has_profile)):
     """
     **Has_Profile permissions required**
@@ -35,7 +35,7 @@ async def get_profile_posts(profile: Profile = Depends(has_profile)):
     return await Post_Pydantic.from_queryset(Post.filter(profile_id=profile.id))
 
 
-@posts_router.get('/{post_id}', response_model=Post_Pydantic)
+@posts_router.get("/{post_id}", response_model=Post_Pydantic)
 async def get_post_details(post_id: int = Path(..., gt=0), profile: Profile = Depends(has_profile)):
     """
     **Has_Profile permissions required**
@@ -45,9 +45,12 @@ async def get_post_details(post_id: int = Path(..., gt=0), profile: Profile = De
     return await Post_Pydantic.from_queryset_single(Post.get(id=post_id))
 
 
-@posts_router.put('/{post_id}', response_model=Post_Pydantic)
-async def update_post_by_id(post: PostIn_Pydantic, post_id: int = Path(..., gt=0),
-                            profile: Profile = Depends(has_profile)):
+@posts_router.put("/{post_id}", response_model=Post_Pydantic)
+async def update_post_by_id(
+    post: PostIn_Pydantic,
+    post_id: int = Path(..., gt=0),
+    profile: Profile = Depends(has_profile),
+):
     """
     **Has_Profile permissions required**
 
@@ -62,7 +65,7 @@ async def update_post_by_id(post: PostIn_Pydantic, post_id: int = Path(..., gt=0
     return await Post_Pydantic.from_queryset_single(Post.get(id=post_id))
 
 
-@posts_router.delete('/{post_id}')
+@posts_router.delete("/{post_id}")
 async def delete_post_by_id(post_id: int = Path(..., gt=0), profile: Profile = Depends(has_profile)):
     """
     **Has_Profile permissions required**
@@ -71,5 +74,5 @@ async def delete_post_by_id(post_id: int = Path(..., gt=0), profile: Profile = D
     """
     deleted_count = await Post.filter(id=post_id)
     if not deleted_count:
-        raise HTTPException(status_code=404, detail=f'Post not found')
-    return JSONResponse(status_code=status.HTTP_200_OK, content={'message': 'Post deleted successfully'})
+        raise HTTPException(status_code=404, detail=f"Post not found")
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Post deleted successfully"})

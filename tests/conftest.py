@@ -8,7 +8,7 @@ from tortoise.contrib.test import finalizer, initializer
 from backend.main import app
 
 
-@pytest.fixture(scope='module', autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def client() -> Generator:
     initializer(modules=MODELS)
     with TestClient(app) as c:
@@ -16,6 +16,6 @@ def client() -> Generator:
     finalizer()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def event_loop(client: TestClient) -> Generator:
     yield client.task.get_loop()

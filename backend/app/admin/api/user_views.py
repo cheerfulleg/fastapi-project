@@ -4,13 +4,18 @@ from fastapi import APIRouter, Path, HTTPException
 from starlette import status
 from starlette.responses import JSONResponse
 
-from backend.app.users.schemas import User_Pydantic, UserIn_Pydantic, User, UserInNoPassword_Pydantic
+from backend.app.users.schemas import (
+    User_Pydantic,
+    UserIn_Pydantic,
+    User,
+    UserInNoPassword_Pydantic,
+)
 from backend.app.users.utils import create_password_hash
 
 user_router = APIRouter()
 
 
-@user_router.post('', response_model=User_Pydantic, status_code=201)
+@user_router.post("", response_model=User_Pydantic, status_code=201)
 async def create_user(new_user: UserIn_Pydantic):
     """
     **Admin permission required**
@@ -26,7 +31,7 @@ async def create_user(new_user: UserIn_Pydantic):
     return await User_Pydantic.from_tortoise_orm(user_obj)
 
 
-@user_router.get('/{user_id}', response_model=User_Pydantic)
+@user_router.get("/{user_id}", response_model=User_Pydantic)
 async def get_user_by_id(user_id: int = Path(..., gt=0)):
     """
     **Admin permission required**
@@ -36,7 +41,7 @@ async def get_user_by_id(user_id: int = Path(..., gt=0)):
     return await User_Pydantic.from_queryset_single(User.get(id=user_id))
 
 
-@user_router.get('', response_model=List[User_Pydantic])
+@user_router.get("", response_model=List[User_Pydantic])
 async def get_users_list():
     """
     **Admin permission required**
@@ -46,7 +51,7 @@ async def get_users_list():
     return await User_Pydantic.from_queryset(User.all())
 
 
-@user_router.put('/{user_id}', response_model=User_Pydantic)
+@user_router.put("/{user_id}", response_model=User_Pydantic)
 async def update_user_by_id(user: UserInNoPassword_Pydantic, user_id: int = Path(..., gt=0)):
     """
     **Admin permission required**
@@ -59,7 +64,7 @@ async def update_user_by_id(user: UserInNoPassword_Pydantic, user_id: int = Path
     return await User_Pydantic.from_queryset_single(User.get(id=user_id))
 
 
-@user_router.delete('/{user_id}')
+@user_router.delete("/{user_id}")
 async def delete_user_by_id(user_id: int):
     """
     **Admin permission required**
@@ -68,5 +73,5 @@ async def delete_user_by_id(user_id: int):
     """
     deleted_count = await User.filter(id=user_id).delete()
     if not deleted_count:
-        raise HTTPException(status_code=404, detail=f'User not found')
-    return JSONResponse(status_code=status.HTTP_200_OK, content={'message': 'User deleted successfully'})
+        raise HTTPException(status_code=404, detail=f"User not found")
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "User deleted successfully"})

@@ -23,9 +23,32 @@ astroid = "^2.6.5"
 pylint = "^2.9.6"
 asynctest = "^0.13.0"
 fastapi-mail = "^0.4.0"
+pre-commit = "^2.13.0"
 
 [tool.poetry.dev-dependencies]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+py36 = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.idea
+  | \.pytest_cache
+  | \migrations
+  | _build
+  | buck-out
+  | build
+  | dist
+
+)/
+'''
