@@ -80,6 +80,7 @@ async def change_profile_pic(fileobject: UploadFile = File(...), filename: str =
     **Has_Profile permissions required
 
     Gets image and uploads it to AWS S3 storage. Saves url from storage to profile model.
+    (not validating whether image or not)
     """
     if filename is None:
         filename = generate_png_string()
@@ -92,4 +93,4 @@ async def change_profile_pic(fileobject: UploadFile = File(...), filename: str =
         await profile.save()
         return await Profile_Pydantic.from_tortoise_orm(profile)
     else:
-        raise HTTPException(status_code=400, detail="Failed to upload in S3")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to upload in S3")
