@@ -2,6 +2,7 @@ import re
 
 from passlib.handlers.bcrypt import bcrypt
 from tortoise import Model, fields
+from tortoise.exceptions import NoValuesFetched
 from tortoise.validators import RegexValidator
 
 from backend.app.posts.models import Post
@@ -29,11 +30,21 @@ class Profile(Model):
     first_name = fields.CharField(60)
     last_name = fields.CharField(60)
     date_of_birth = fields.DateField()
+    subscribers = fields.ManyToManyField("models.Profile", through="subscriptions", on_delete=fields.CASCADE, null=True, required=False, forward_key="subscriber")
 
     posts: fields.ReverseRelation["Post"]
 
     def user_id(self) -> int:
         return self.user.id
 
+    def subscribers_count(self) -> int:
+        try:
+            return len(self.subscribers)
+        except NoValuesFetched:
+            return 0
+
     class PydanticMeta:
-        computed = ("user_id",)
+        computed = (
+            "user_id",
+            "subscribers_count",
+        )
