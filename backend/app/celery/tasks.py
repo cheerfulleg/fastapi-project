@@ -2,11 +2,9 @@ import time
 
 from celery import Celery
 
+from backend.config.settings import CELERY_BROKER_URL
 
-celery = Celery("tasks", backend="redis://127.0.0.1:6379/0", broker="redis://127.0.0.1:6379/0")
-
-# celery.conf.broker_url = 'redis://127.0.0.1:6379/0'
-# celery.conf.result_backend = 'redis://'
+celery = Celery("tasks", backend=CELERY_BROKER_URL, broker=CELERY_BROKER_URL)
 
 
 @celery.task(name="create_task")
