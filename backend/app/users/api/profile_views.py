@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile, File, Body, HTTPException
 from starlette import status
 from starlette.responses import JSONResponse
 
-from backend.app.auth.permissions import get_current_user
+from backend.app.auth.permissions import get_current_user, has_profile
+from backend.app.aws_service.s3_utils import s3_service, generate_png_string
 from backend.app.users.schemas import (
     User_Pydantic,
     User,
@@ -10,6 +11,7 @@ from backend.app.users.schemas import (
     ProfileIn_Pydantic,
     Profile,
 )
+from backend.config import settings
 
 profile_router = APIRouter()
 
@@ -70,3 +72,19 @@ async def update_user_profile(user: User = Depends(get_current_user)):
         status_code=status.HTTP_200_OK,
         content={"message": "Profile deleted successfully"},
     )
+
+
+@profile_router.put("/change-profile-pic", response_model=Profile_Pydantic)
+async def change_profile_pic(fileobject: UploadFile = File(...), filename: str = Body(default=None), profile: Profile = Depends(has_profile)):
+    if filename is None:
+        filename = generate_png_string()
+    data = fileobject.file._file  # Converting tempfile.SpooledTemporaryFile to io.BytesIO
+    key = f"{settings.AWS_BUCKET_FOLDER}/{filename}"
+    uploads3 = await s3_service.upload_file(bucket=settings.S3_BUCKET, key=key, fileobject=data)
+    if uploads3:
+        s3_url = f"https://{settings.S3_BUCKET}.s3.{settings.AWS_REGION}.amazonaws.com/{key}"
+        profile.avatar_url = s3_url
+        await profile.save()
+        return await Profile_Pydantic.from_tortoise_orm(profile)
+    else:
+        raise HTTPException(status_code=400, detail="Failed to upload in S3")

@@ -4,7 +4,7 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 from backend.app.users.models import Profile, User
 
 Profile_Pydantic = pydantic_model_creator(Profile, name="Profile", exclude=("user_id",))
-ProfileIn_Pydantic = pydantic_model_creator(Profile, name="ProfileIn", exclude_readonly=True)
+ProfileIn_Pydantic = pydantic_model_creator(Profile, name="ProfileIn", exclude_readonly=True, exclude=("avatar_url",))
 ProfileInWithUserId_Pydantic = pydantic_model_creator(
     Profile,
     name="ProfileInWithUserId",

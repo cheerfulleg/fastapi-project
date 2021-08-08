@@ -30,7 +30,6 @@ JWT_SECRET = os.getenv("JWT_SECRET")
 REFRESH_TOKEN_EXP_HOURS = int(os.getenv("REFRESH_TOKEN_EXP_HOURS"))
 ACCESS_TOKEN_EXP_MINUTES = int(os.getenv("ACCESS_TOKEN_EXP_MINUTES"))
 
-
 # Email settings
 conf = ConnectionConfig(
     MAIL_USERNAME=os.getenv("EMAIL_HOST_USER"),
@@ -44,3 +43,11 @@ conf = ConnectionConfig(
 )
 
 fm = FastMail(conf)
+
+# AWS settings
+
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = os.getenv("AWS_REGION")
+S3_BUCKET = os.getenv("S3_BUCKET")
+AWS_BUCKET_FOLDER = "profileImages"

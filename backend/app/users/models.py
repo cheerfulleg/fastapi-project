@@ -31,6 +31,7 @@ class Profile(Model):
     last_name = fields.CharField(60)
     date_of_birth = fields.DateField()
     subscribers = fields.ManyToManyField("models.Profile", through="subscriptions", on_delete=fields.CASCADE, null=True, required=False, forward_key="subscriber")
+    avatar_url = fields.TextField(default=None, required=False, null=True)
 
     posts: fields.ReverseRelation["Post"]
 
