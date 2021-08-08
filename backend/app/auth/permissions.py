@@ -10,10 +10,10 @@ from backend.config import settings
 async def get_current_user(token: str = Depends(settings.oauth2_scheme)):
     token_data = auth_jwt.decode_token(token)
     user = await User.get(id=token_data.get("id"))
-    return await User_Pydantic.from_tortoise_orm(user)
+    return user
 
 
-async def check_user_is_admin(user: User_Pydantic = Depends(get_current_user)):
+async def check_user_is_admin(user: User = Depends(get_current_user)):
     if user.is_admin is not True:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -23,7 +23,7 @@ async def check_user_is_admin(user: User_Pydantic = Depends(get_current_user)):
 
 
 async def has_profile(user: User_Pydantic = Depends(get_current_user)):
-    profile = await Profile.filter(user_id=user.dict().get("id"))
+    profile = await Profile.filter(user_id=user.id)
     if not profile:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You didn't created profile")
-    return await Profile_Pydantic.from_tortoise_orm(profile[0])
+    return profile[0]
