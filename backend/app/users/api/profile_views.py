@@ -76,6 +76,11 @@ async def update_user_profile(user: User = Depends(get_current_user)):
 
 @profile_router.put("/change-profile-pic", response_model=Profile_Pydantic)
 async def change_profile_pic(fileobject: UploadFile = File(...), filename: str = Body(default=None), profile: Profile = Depends(has_profile)):
+    """
+    **Has_Profile permissions required
+
+    Gets image and uploads it to AWS S3 storage. Saves url from storage to profile model.
+    """
     if filename is None:
         filename = generate_png_string()
     data = fileobject.file._file  # Converting tempfile.SpooledTemporaryFile to io.BytesIO
