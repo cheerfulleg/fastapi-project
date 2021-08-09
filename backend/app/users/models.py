@@ -47,5 +47,5 @@ class Profile(Model):
     class PydanticMeta:
         computed = (
             "user_id",
-            "subscribers_count",
+            # "subscribers_count", For some reason it isn't excluded in pydantic_model_creator ProfileInWithUserId_Pydantic
         )
