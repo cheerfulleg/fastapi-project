@@ -1,4 +1,7 @@
+import aioredis
 from fastapi import FastAPI
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
 from fastapi_pagination import add_pagination
 from tortoise.contrib.fastapi import register_tortoise
 
@@ -14,6 +17,13 @@ register_tortoise(
     generate_schemas=True,
     add_exception_handlers=True,
 )
+
+
+@app.on_event("startup")
+async def startup():
+    redis = aioredis.from_url(settings.REDIS_CACHE_URL, encoding="utf8", decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
 
 register_views(app)
 add_pagination(app)

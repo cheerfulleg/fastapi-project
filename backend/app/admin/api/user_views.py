@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Path, HTTPException
+from fastapi_cache.decorator import cache
 from fastapi_pagination import Page
 from starlette import status
 from starlette.responses import JSONResponse
@@ -35,6 +36,7 @@ async def create_user(new_user: UserIn_Pydantic):
 
 
 @user_router.get("/{user_id}", response_model=User_Pydantic)
+@cache(expire=60)
 async def get_user_by_id(user_id: int = Path(..., gt=0)):
     """
     **Admin permission required**
@@ -45,6 +47,7 @@ async def get_user_by_id(user_id: int = Path(..., gt=0)):
 
 
 @user_router.get("", response_model=Page[User_Pydantic])
+@cache(expire=60)
 async def get_users_list():
     """
     **Admin permission required**

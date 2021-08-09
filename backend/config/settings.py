@@ -54,3 +54,6 @@ AWS_BUCKET_FOLDER = "profileImages"
 
 # Celery settings
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+
+# Caching settings
+REDIS_CACHE_URL = os.getenv("REDIS_CACHE_URL")
