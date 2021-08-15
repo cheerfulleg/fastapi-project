@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from fastapi.security import OAuth2PasswordBearer
 from fastapi_mail import ConnectionConfig, FastMail
+from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv()
 
@@ -11,6 +12,10 @@ TESTING = os.getenv("TESTING", False)
 APP_NAME = "FastAPI Tortoise Project"
 APP_VERSION = "0.0.1beta"
 
+# MongoDB settings
+MONGODB_URL = os.getenv("MONGODB_URL")
+client = AsyncIOMotorClient(MONGODB_URL)
+
 # Database settings
 POSTGRESQL_HOSTNAME = os.getenv("DB_HOST")
 POSTGRESQL_USERNAME = os.getenv("DB_USER")
@@ -18,8 +23,10 @@ POSTGRESQL_PASSWORD = os.getenv("DB_PASS")
 POSTGRESQL_DATABASE = os.getenv("DB_NAME")
 if TESTING:
     DB_URI = "sqlite://:memory:"
+    db = client.tests_chat
 else:
     DB_URI = f"postgres://{POSTGRESQL_USERNAME}:{POSTGRESQL_PASSWORD}@{POSTGRESQL_HOSTNAME}:5432/{POSTGRESQL_DATABASE}"
+    db = client.chat
 
 MODELS_LIST = ["backend.app.users.models", "backend.app.posts.models"]
 
@@ -45,7 +52,6 @@ conf = ConnectionConfig(
 fm = FastMail(conf)
 
 # AWS settings
-
 AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_REGION = os.getenv("AWS_REGION")
