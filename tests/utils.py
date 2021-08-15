@@ -1,9 +1,14 @@
 import asyncio
 
+from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.testclient import TestClient
 
 from backend.app.users.models import User
 from backend.app.users.utils import create_password_hash
+
+
+def clean_mongo(client: AsyncIOMotorClient):
+    client.drop_database("tests_chat")
 
 
 def get_headers(client: TestClient, user_data: dict, event_loop: asyncio.AbstractEventLoop):

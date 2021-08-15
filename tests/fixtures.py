@@ -3,6 +3,8 @@ import asyncio
 import pytest
 from starlette.testclient import TestClient
 
+from backend.app.chat.schemas import MessageModel
+from backend.app.chat.services import ChatService, MessageService
 from tests.utils import get_headers, get_profile_headers
 
 
@@ -141,6 +143,57 @@ def invalid_user_data() -> dict:
 @pytest.fixture(scope="module")
 def invalid_post_data() -> dict:
     return {"title": "Title" * 100}
+
+
+@pytest.fixture(scope="module")
+def chat_data() -> dict:
+    return {"members": [1, 2]}
+
+
+@pytest.fixture(scope="module")
+def chat_id(event_loop: asyncio.AbstractEventLoop, chat_data: dict) -> str:
+    async def create_chat(data):
+        obj = await ChatService.create(data)
+        return obj.get("_id")
+
+    object_id = event_loop.run_until_complete(create_chat(chat_data))
+    return str(object_id)
+
+
+@pytest.fixture(scope="module")
+def invalid_chat_id(chat_id):
+    return "6118f421d6f301e064256129"
+
+
+@pytest.fixture(scope="module")
+def message_id(event_loop: asyncio.AbstractEventLoop, chat_id: dict, message_body: dict) -> str:
+    async def create_message(data, _chat_id):
+        message = MessageModel(**data, chat_id=chat_id, user_id=1)
+        obj = await MessageService.create(message.dict())
+        return obj.get("_id")
+
+    object_id = event_loop.run_until_complete(create_message(message_body, chat_id))
+    return str(object_id)
+
+
+@pytest.fixture(scope="module")
+def invalid_message_id(message_id):
+    return "6118f421d6f301e064256122"
+
+
+@pytest.fixture(scope="module")
+def message_body() -> dict:
+    return {"body": "lorem ipsum"}
+
+
+@pytest.fixture(scope="module")
+def update_message_body() -> dict:
+    return {"body": "UPDATE"}
+
+
+@pytest.fixture(scope="module")
+def invalid_message_body() -> dict:
+    return {"invalid_field": "lorem ipsum"}
 
 
 @pytest.fixture(scope="module")
