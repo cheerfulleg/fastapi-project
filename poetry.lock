@@ -1,6 +1,6 @@
 [[package]]
 name = "aerich"
-version = "0.5.5"
+version = "0.5.6"
 description = "A database migrations tool for Tortoise ORM."
 category = "main"
 optional = false
@@ -445,7 +445,7 @@ idna = ">=2.0.0"
 
 [[package]]
 name = "fakeredis"
-version = "1.5.2"
+version = "1.6.0"
 description = "Fake implementation of redis API for testing purposes."
 category = "main"
 optional = false
@@ -457,7 +457,7 @@ six = ">=1.12"
 sortedcontainers = "*"
 
 [package.extras]
-aioredis = ["aioredis (<2)"]
+aioredis = ["aioredis"]
 lua = ["lupa"]
 
 [[package]]
@@ -536,13 +536,13 @@ typing-extensions = ">=3.7.4,<4.0.0"
 
 [package.extras]
 gino = ["gino[starlette] (>=1.0.1,<2.0.0)", "SQLAlchemy (>=1.3.20,<2.0.0)", "sqlalchemy-stubs (>=0.4,<0.5)"]
-all = ["gino[starlette] (>=1.0.1,<2.0.0)", "SQLAlchemy (>=1.3.20,<2.0.0)", "sqlalchemy-stubs (>=0.4,<0.5)", "databases[mysql,postgresql,sqlite] (>=0.4.0,<0.5.0)", "orm (>=0.1.5,<0.2.0)", "tortoise-orm[aiosqlite,asyncpg,aiomysql] (>=0.16.18,<0.18.0)", "asyncpg (==0.23.0)", "ormar (>=0.10.5,<0.11.0)", "Django (<3.3.0)", "piccolo (>=0.29.0,<0.30.0)"]
+all = ["gino[starlette] (>=1.0.1,<2.0.0)", "SQLAlchemy (>=1.3.20,<2.0.0)", "sqlalchemy-stubs (>=0.4,<0.5)", "databases[sqlite,postgresql,mysql] (>=0.4.0,<0.5.0)", "orm (>=0.1.5,<0.2.0)", "tortoise-orm[aiomysql,aiosqlite,asyncpg] (>=0.16.18,<0.18.0)", "asyncpg (==0.23.0)", "ormar (>=0.10.5,<0.11.0)", "Django (<3.3.0)", "piccolo (>=0.29.0,<0.30.0)"]
 sqlalchemy = ["SQLAlchemy (>=1.3.20,<2.0.0)", "sqlalchemy-stubs (>=0.4,<0.5)"]
 asyncpg = ["SQLAlchemy (>=1.3.20,<2.0.0)", "asyncpg (==0.23.0)"]
-databases = ["databases[mysql,postgresql,sqlite] (>=0.4.0,<0.5.0)"]
-orm = ["databases[mysql,postgresql,sqlite] (>=0.4.0,<0.5.0)", "orm (>=0.1.5,<0.2.0)"]
-django = ["databases[mysql,postgresql,sqlite] (>=0.4.0,<0.5.0)", "Django (<3.3.0)"]
-tortoise = ["tortoise-orm[aiosqlite,asyncpg,aiomysql] (>=0.16.18,<0.18.0)"]
+databases = ["databases[sqlite,postgresql,mysql] (>=0.4.0,<0.5.0)"]
+orm = ["databases[sqlite,postgresql,mysql] (>=0.4.0,<0.5.0)", "orm (>=0.1.5,<0.2.0)"]
+django = ["databases[sqlite,postgresql,mysql] (>=0.4.0,<0.5.0)", "Django (<3.3.0)"]
+tortoise = ["tortoise-orm[aiomysql,aiosqlite,asyncpg] (>=0.16.18,<0.18.0)"]
 ormar = ["ormar (>=0.10.5,<0.11.0)"]
 piccolo = ["piccolo (>=0.29.0,<0.30.0)"]
 
@@ -1140,7 +1140,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "virtualenv"
-version = "20.7.0"
+version = "20.7.2"
 description = "Virtual Python Environment builder"
 category = "main"
 optional = false
@@ -1192,8 +1192,8 @@ content-hash = "f04c6d97c06bdcd408c83811e109fd197edeede69721f852573562638cdff113
 
 [metadata.files]
 aerich = [
-    {file = "aerich-0.5.5-py3-none-any.whl", hash = "sha256:465922abd2e4ba54f9456f4192434208a36e3cea1e4b8c00943cf07f7e67ab73"},
-    {file = "aerich-0.5.5.tar.gz", hash = "sha256:f71fba703106beed0e98084276707031e520ebbc5f42298424bc49303315e99e"},
+    {file = "aerich-0.5.6-py3-none-any.whl", hash = "sha256:3213cc81ccccab49f0410523d961a00063adf18f293a11e14dd189a2388ae599"},
+    {file = "aerich-0.5.6.tar.gz", hash = "sha256:398f193fc89b9f52111b3be7b9af2e9ff20cefb7af41bb5106cd3fc6601b3ae0"},
 ]
 aiobotocore = [
     {file = "aiobotocore-1.3.3.tar.gz", hash = "sha256:b6bae95c55ef822d790bf8ebf6aed3d09b33e2817fa5f10e16a77028332963c2"},
@@ -1426,8 +1426,8 @@ email-validator = [
     {file = "email_validator-1.1.3.tar.gz", hash = "sha256:aa237a65f6f4da067119b7df3f13e89c25c051327b2b5b66dc075f33d62480d7"},
 ]
 fakeredis = [
-    {file = "fakeredis-1.5.2-py3-none-any.whl", hash = "sha256:f1ffdb134538e6d7c909ddfb4fc5edeb4a73d0ea07245bc69b8135fbc4144b04"},
-    {file = "fakeredis-1.5.2.tar.gz", hash = "sha256:18fc1808d2ce72169d3f11acdb524a00ef96bd29970c6d34cfeb2edb3fc0c020"},
+    {file = "fakeredis-1.6.0-py3-none-any.whl", hash = "sha256:3449b306f3a85102b28f8180c24722ef966fcb1e3c744758b6f635ec80321a5c"},
+    {file = "fakeredis-1.6.0.tar.gz", hash = "sha256:11ccfc9769d718d37e45b382e64a6ba02586b622afa0371a6bd85766d72255f3"},
 ]
 fastapi = [
     {file = "fastapi-0.67.0-py3-none-any.whl", hash = "sha256:b05f5af77af3b21cab896b8dade8b383b2d2f254caae4681a56313e29196f1ac"},
@@ -1880,8 +1880,8 @@ vine = [
     {file = "vine-1.3.0.tar.gz", hash = "sha256:133ee6d7a9016f177ddeaf191c1f58421a1dcc6ee9a42c58b34bed40e1d2cd87"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.7.0-py2.py3-none-any.whl", hash = "sha256:fdfdaaf0979ac03ae7f76d5224a05b58165f3c804f8aa633f3dd6f22fbd435d5"},
-    {file = "virtualenv-20.7.0.tar.gz", hash = "sha256:97066a978431ec096d163e72771df5357c5c898ffdd587048f45e0aecc228094"},
+    {file = "virtualenv-20.7.2-py2.py3-none-any.whl", hash = "sha256:e4670891b3a03eb071748c569a87cceaefbf643c5bac46d996c5a45c34aa0f06"},
+    {file = "virtualenv-20.7.2.tar.gz", hash = "sha256:9ef4e8ee4710826e98ff3075c9a4739e2cb1040de6a2a8d35db0055840dc96a0"},
 ]
 websockets = [
     {file = "websockets-9.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:d144b350045c53c8ff09aa1cfa955012dd32f00c7e0862c199edcabb1a8b32da"},
